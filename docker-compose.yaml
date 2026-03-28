@@ -1,0 +1,20 @@
+services:
+  desktop:
+    build: .
+    image: openclaw-desktop
+    container_name: ${HOSTNAME:-openclaw}
+    hostname: ${HOSTNAME:-openclaw}
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ:-UTC}
+      - TITLE=${TITLE:-OpenClaw Desktop}
+      - CUSTOM_USER=${CUSTOM_USER:-admin}
+      - PASSWORD=${PASSWORD:?Set PASSWORD in .env}
+    volumes:
+      - ./config/obsidian:/config/.config/obsidian
+      - ./config/openclaw:/config/.openclaw
+    ports:
+      - "${PORT:-3000}:3000"
+    shm_size: "1gb"
+    restart: unless-stopped

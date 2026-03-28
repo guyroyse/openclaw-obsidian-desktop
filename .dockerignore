@@ -1,0 +1,9 @@
+.claude/
+.git/
+config/
+
+.dockerignore
+.env
+.env.sample
+.gitignore
+README.md
