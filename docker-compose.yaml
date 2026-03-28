@@ -16,5 +16,6 @@ services:
       - ./config/openclaw:/config/.openclaw
     ports:
       - "${PORT:-3000}:3000"
+      - "${OPENCLAW_PORT:-18789}:18789"
     shm_size: "1gb"
     restart: unless-stopped

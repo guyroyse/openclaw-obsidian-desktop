@@ -56,6 +56,7 @@ Once the desktop is running in your browser:
 
 <!-- TODO: Fill in from onboarding experience -->
 <!-- TODO: openclaw gateway setup, Discord bot config, etc. -->
+<!-- TODO: Configure gateway to bind to 0.0.0.0 so the web UI is accessible outside the container -->
 
 ## Accessing the Desktop
 
@@ -70,22 +71,23 @@ You'll be prompted for the username and password you set in `.env`.
 
 The `config/` directory contains bind mounts that persist across container rebuilds. Only the things that matter are stored here -- everything else is ephemeral.
 
-| Path | Container path | Purpose |
-|------|---------------|---------|
-| `config/obsidian/` | `/config/.config/obsidian` | Obsidian app config: account login, Sync settings, E2E encryption state, plugin configs, CLI registration. Preserving this means you don't have to redo the manual setup after a rebuild. |
-| `config/openclaw/` | `/config/.openclaw` | OpenClaw config, memory, and logs. |
+| Host path          | Container path             | Purpose                         |
+| ------------------ | -------------------------- | ------------------------------- |
+| `config/obsidian/` | `/config/.config/obsidian` | Obsidian settings               |
+| `config/openclaw/` | `/config/.openclaw`        | OpenClaw settings and workspace |
 
 The vault data itself is **not** persisted in a bind mount. If the container is destroyed, Obsidian Sync pulls it back down.
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PASSWORD` | *(required)* | Web desktop login password |
-| `CUSTOM_USER` | `admin` | Web desktop login username |
-| `HOSTNAME` | `openclaw` | Container hostname |
-| `TITLE` | `OpenClaw Desktop` | Browser tab title |
-| `TZ` | `UTC` | Container timezone |
-| `PORT` | `3000` | Host port for web desktop |
+| Variable        | Default            | Description                   |
+| --------------- | ------------------ | ----------------------------- |
+| `PASSWORD`      | _(required)_       | Web desktop login password    |
+| `CUSTOM_USER`   | `admin`            | Web desktop login username    |
+| `HOSTNAME`      | `openclaw`         | Container hostname            |
+| `TITLE`         | `OpenClaw Desktop` | Browser tab title             |
+| `TZ`            | `UTC`              | Container timezone            |
+| `PORT`          | `3000`             | Host port for web desktop     |
+| `OPENCLAW_PORT` | `18789`            | Host port for OpenClaw web UI |
 
 API keys for your LLM provider and Discord bot token should also be set in `.env`. See `.env.sample` for examples.
