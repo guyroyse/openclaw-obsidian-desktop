@@ -1,4 +1,6 @@
 .claude/
-config/
+config/**
+!config/**/
+!config/**/.gitkeep
 
 .env

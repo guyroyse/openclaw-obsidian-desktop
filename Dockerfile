@@ -1,5 +1,12 @@
 FROM lscr.io/linuxserver/webtop:ubuntu-xfce
 
+ARG APT_LISTS=/var/lib/apt/lists/*
+
+ARG OB_DEB_URL=https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/obsidian_1.12.7_amd64.deb
+ARG OB_DEB_PATH=/tmp/obsidian.deb
+ARG OB_DESKTOP_FILE=/usr/share/applications/obsidian.desktop
+ARG OB_AUTOSTART=/etc/xdg/autostart/obsidian.desktop
+
 # Update package index
 RUN apt-get update
 
@@ -11,16 +18,18 @@ RUN apt-get install -y nodejs && \
 RUN npm install -g openclaw
 
 # Install Obsidian Desktop
-RUN curl -fsSL -o /tmp/obsidian.deb https://github.com/obsidianmd/obsidian-releases/releases/download/v1.12.7/obsidian_1.12.7_amd64.deb && \
-    apt-get install -y /tmp/obsidian.deb && \
-    rm -f /tmp/obsidian.deb
+RUN curl -fsSL -o ${OB_DEB_PATH} ${OB_DEB_URL} && \
+    apt-get install -y ${OB_DEB_PATH} && \
+    rm -f ${OB_DEB_PATH}
 
 # Fix Obsidian launch in container (Electron needs --no-sandbox)
-RUN sed -i 's|Exec=/opt/Obsidian/obsidian %U|Exec=/opt/Obsidian/obsidian --no-sandbox %U|' /usr/share/applications/obsidian.desktop
+RUN sed -i \
+    's|Exec=/opt/Obsidian/obsidian %U|Exec=/opt/Obsidian/obsidian --no-sandbox %U|' \
+    ${OB_DESKTOP_FILE}
 
 # Auto-start Obsidian with the desktop
-RUN cp /usr/share/applications/obsidian.desktop /etc/xdg/autostart/obsidian.desktop
+RUN cp ${OB_DESKTOP_FILE} ${OB_AUTOSTART}
 
 # Clean up package index
-RUN rm -rf /var/lib/apt/lists/*
+RUN rm -rf ${APT_LISTS}
 
