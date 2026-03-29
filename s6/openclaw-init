@@ -1,0 +1,5 @@
+#!/bin/bash
+# Configure OpenClaw gateway for LAN access on container startup
+s6-setuidgid abc openclaw config set gateway.controlUi.dangerouslyAllowHostHeaderOriginFallback true
+s6-setuidgid abc openclaw config set gateway.bind lan
+s6-setuidgid abc openclaw config set gateway.mode local

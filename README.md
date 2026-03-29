@@ -1,6 +1,6 @@
 # OpenClaw Desktop
 
-Run [OpenClaw](https://openclaw.dev) and [Obsidian](https://obsidian.md) together in a Docker container so your AI agent can interact with your Obsidian vault using the Obsidian CLI.
+Run [OpenClaw](https://openclaw.ai) and [Obsidian](https://obsidian.md) together in a Docker container so your AI agent can interact with your Obsidian vault using the Obsidian CLI.
 
 The Obsidian CLI requires the full Obsidian Desktop app to be running (it communicates via IPC), so this project packages everything inside a lightweight XFCE desktop accessible through your browser. Your agent gets shell access to the Obsidian CLI for searching, reading, writing, managing tasks, and more -- all without reading or writing markdown files directly.
 
@@ -9,7 +9,17 @@ The Obsidian CLI requires the full Obsidian Desktop app to be running (it commun
 - Docker and Docker Compose
 - An Obsidian account with Sync (for pulling your vault into the container)
 
-## Quick Start
+> **Security note:** The OpenClaw gateway is configured to bind to all network interfaces (LAN mode) so you can access the web UI from other machines on your network. This means anyone on your local network can reach the gateway. Token authentication is enabled by default, but this setup is designed for use on a trusted home network -- not a public or shared network.
+
+## Getting Started
+
+You'll be doing three main things to get this up and running:
+
+1. Buiding the image and getting the container running.
+2. Configuring Obsidian and Obsidian Sync within the container.
+3. COnfiguring OpenClaw within the container.
+
+### Running the Container
 
 1. Clone the repo:
 
@@ -32,42 +42,77 @@ The Obsidian CLI requires the full Obsidian Desktop app to be running (it commun
    docker compose up -d
    ```
 
-4. Open the virtual desktop in your browser at `http://localhost:3000` (or whatever port you configured).
+4. Open the virtual desktop in your browser:
 
-## Setting Up Obsidian
+   You can use either localhost or access it over your network:
+   - **Local access:** `http://localhost:3000`
+   - **LAN access:** `http://your-mahcine.local:3000`
 
-Once the desktop is running in your browser:
+   You'll be prompted for the username and password you set in `.env`.
 
-<!-- TODO: Fill in from onboarding experience -->
+Once the desktop is running in your browser you'll see that Obsidian is already launched.
 
-1. Obsidian should launch automatically. If not, open it from the applications menu.
-2. Log into your Obsidian account.
-3. Set up Obsidian Sync -- select your vault.
-4. Enter your E2E encryption password.
-5. Wait for the vault to sync down.
-6. Go to Settings > General > enable Command Line Interface.
-7. Follow the prompt to register the CLI.
-8. Open a terminal and verify: `obsidian help`
+### Setting Up Obsidian
 
-<!-- TODO: Notes on what actually happened during onboarding -->
-<!-- TODO: Any gotchas or things that weren't obvious -->
+First, we'll set up Obsidian Sync:
 
-## Setting Up OpenClaw
+1. Log into your Obsidian account.
 
-<!-- TODO: Fill in from onboarding experience -->
-<!-- TODO: openclaw gateway setup, Discord bot config, etc. -->
-<!-- TODO: Configure gateway to bind to 0.0.0.0 so the web UI is accessible outside the container -->
+2. Select which vault from your Obsidian Sync you want to use and **Connect** it.
 
-## Accessing the Desktop
+3. Accept the default folder for the vault and **Create** it.
 
-The virtual desktop is served over HTTP on port 3000 (configurable via `PORT` in `.env`).
+4. Enter your E2E encryption password if needed and **Unlock vault**.
 
-- **Local access:** `http://localhost:3000`
-- **LAN access:** `http://<host-ip>:3000` -- the port is open to all interfaces by default.
+5. **Start syncing** and wait for it to finish.
 
-You'll be prompted for the username and password you set in `.env`.
+Next, let's set up the command line interface so OpenClaw can use the CLI to talk to Obsidian:
 
-## What's in `config/`
+1. Go to ⚙️ Settings > General and toggle the **Command line interface** to on.
+
+2. Follow the prompt to register the CLI which will add the CLI to your system path.
+
+3. Open a terminal and verify it works.
+
+   ```bash
+   obsidian help
+   ```
+
+4. If it worked, you will see the help for Obsidian CLI.
+
+Next, we need to enable community plugins and enable them to be synced. If you're not using any plugins and never plan to, you can skip these steps:
+
+1. Go to ⚙️ Settings > Community plugins and **Turn on community plugins**.
+
+2. Also turn on **Automatically check for plugin updates**.
+
+3. Go to Sync and toggle **Active community plugin list** and **Installed community plugins** to on. This will allow OpenClaw to manage plugins on your behalf and have them sync to your other devices. If you tell it to, of course.
+
+4. Close Obsidian and relaunch it. Any plugins you have will now be loaded.
+
+All of these settings are stored in `config/obsidian/` on the host, so you only need to do this once. If you need to rebuild the container (e.g. to upgrade Obsidian or Node.js), just tear it down and bring it back up -- your login, Sync config, and plugin settings will all be there.
+
+### Setting Up OpenClaw
+
+OpenClaw is already installed and its gateway is running. You can access the web UI, but there's no AI provider configured, no skills installed, and no communication channels set up yet. We need to run through the onboarding process to set all of that up.
+
+1. Launch a command-line Terminal if one isn't already open.
+
+2. Start OpenClaw's onboarding process and follow the instructions:
+
+   ```bash
+   openclaw onboard --skip-daemon --skip-health
+   ```
+
+   The `--skip-daemon` flag skips the systemd service install, which doesn't work in a container. The gateway is already running via s6-overlay instead. The `--skip-health` flag skips the health check, which expects systemd and reports a false failure.
+
+3. When prompted about **Config handling**, choose **Use existing values**. The gateway has already been configured for LAN access by the container's startup scripts.
+
+<!-- TODO: Discord bot setup, skills, etc. -->
+
+## Reference
+
+### What's in `config/`
 
 The `config/` directory contains bind mounts that persist across container rebuilds. Only the things that matter are stored here -- everything else is ephemeral.
 
@@ -76,9 +121,7 @@ The `config/` directory contains bind mounts that persist across container rebui
 | `config/obsidian/` | `/config/.config/obsidian` | Obsidian settings               |
 | `config/openclaw/` | `/config/.openclaw`        | OpenClaw settings and workspace |
 
-The vault data itself is **not** persisted in a bind mount. If the container is destroyed, Obsidian Sync pulls it back down.
-
-## Environment Variables
+### Environment Variables
 
 | Variable        | Default            | Description                   |
 | --------------- | ------------------ | ----------------------------- |

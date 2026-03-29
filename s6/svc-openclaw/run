@@ -1,0 +1,3 @@
+#!/usr/bin/with-contenv bash
+# Start the OpenClaw gateway as a long-running service
+exec s6-setuidgid abc openclaw gateway run
