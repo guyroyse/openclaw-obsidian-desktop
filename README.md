@@ -17,7 +17,7 @@ You'll be doing three main things to get this up and running:
 
 1. Buiding the image and getting the container running.
 2. Configuring Obsidian and Obsidian Sync within the container.
-3. COnfiguring OpenClaw within the container.
+3. Configuring OpenClaw within the container.
 
 ### Running the Container
 
@@ -108,7 +108,17 @@ OpenClaw is already installed and its gateway is running. You can access the web
 
 3. When prompted about **Config handling**, choose **Use existing values**. The gateway has already been configured for LAN access by the container's startup scripts.
 
-<!-- TODO: Discord bot setup, skills, etc. -->
+4. Look at your openclaw.json file. This will be on your host system in the `config/openclaw` folder or in the virtual desktop in `~/.openclaw`. Regardless of how you access it, look for your gateway auth token. It should be near the bottom of the file. Copy it.
+
+5. Navigate in your browser to http://127.0.0.1:18789/. In the **Gateway Token** field, paste your gateway auth token and click **Connect**.
+
+6. You should now be able to chat with OpenClaw in the web interface. Say something to it like "Hello?" or my favorite, "Happy birthday!". It'll response and guide you through the rest of the setup process.
+
+7. Try accessing OpenClaw from a web browser outside of the container as well. use the same token as before when prompted. I recommend putting the token in a password manager.
+
+8. You will be told that pairing is required. Go back into the browser in the virtual desktop and ask OpenClaw to approve the request. It might ask some clarifying questions.
+
+9. You'll need to do this for each new browser you set up but you can ask OpenClaw to confirm the pairing request from any browser you have successfully pair and from any other private channel you use to talk to it.
 
 ## Reference
 

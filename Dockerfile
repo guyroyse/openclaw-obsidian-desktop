@@ -30,6 +30,10 @@ RUN sed -i \
 # Auto-start Obsidian with the desktop
 RUN cp ${OB_DESKTOP_FILE} ${OB_AUTOSTART}
 
+# Set default git identity (OpenClaw versions its workspace with git)
+RUN git config --system user.name "OpenClaw" && \
+    git config --system user.email "openclaw@localhost"
+
 # Install OpenClaw
 RUN npm install -g openclaw
 
