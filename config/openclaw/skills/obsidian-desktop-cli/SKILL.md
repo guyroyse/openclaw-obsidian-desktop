@@ -1,6 +1,8 @@
 ---
 name: obsidian-desktop-cli
 description: Search, read, create, and manage notes, tasks, and properties in an Obsidian vault using the Obsidian Desktop CLI
+user-invocable: false
+disable-model-invocation: false
 metadata:
   version: 0.1.0
   author: Guy Royse <guy@guy.dev> (https://guy.dev)
