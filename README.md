@@ -92,6 +92,8 @@ Next, we need to enable community plugins and enable them to be synced. If you'r
 
 All of these settings are stored in `config/obsidian/` on the host, and your vault data is stored in `vaults/` on the host, so you only need to do this once. If you need to rebuild the container (e.g. to upgrade Obsidian or Node.js), just tear it down and bring it back up -- your login, Sync config, plugin settings, and vault data will all be there.
 
+Finally, consider adding a **README** file to the root of your vault. OpenClaw's Obsidian skill reads this file before working in the vault to learn about its structure, folder conventions, templates, and any rules you want it to follow. If no README exists, OpenClaw will offer to help you create one.
+
 ### Setting Up OpenClaw
 
 OpenClaw is already installed and its gateway is running. You can access the web UI, but there's no AI provider configured, no skills installed, and no communication channels set up yet. We need to run through the onboarding process to set all of that up.
