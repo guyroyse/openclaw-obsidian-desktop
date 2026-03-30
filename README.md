@@ -60,7 +60,7 @@ First, we'll set up Obsidian Sync:
 
 2. Select which vault from your Obsidian Sync you want to use and **Connect** it.
 
-3. Accept the default folder for the vault and **Create** it.
+3. When prompted for the vault location, set it to `/config/Obsidian` and **Create** it. This path is bind-mounted to `vaults/` on the host, so your vault will persist across container rebuilds.
 
 4. Enter your E2E encryption password if needed and **Unlock vault**.
 
@@ -88,9 +88,9 @@ Next, we need to enable community plugins and enable them to be synced. If you'r
 
 3. Go to Sync and toggle **Active community plugin list** and **Installed community plugins** to on. This will allow OpenClaw to manage plugins on your behalf and have them sync to your other devices. If you tell it to, of course.
 
-4. Close Obsidian and relaunch it. Any plugins you have will now be loaded.
+4. Close Obsidian and relaunch it. Any plugins you have should now be loaded.
 
-All of these settings are stored in `config/obsidian/` on the host, so you only need to do this once. If you need to rebuild the container (e.g. to upgrade Obsidian or Node.js), just tear it down and bring it back up -- your login, Sync config, and plugin settings will all be there.
+All of these settings are stored in `config/obsidian/` on the host, and your vault data is stored in `vaults/` on the host, so you only need to do this once. If you need to rebuild the container (e.g. to upgrade Obsidian or Node.js), just tear it down and bring it back up -- your login, Sync config, plugin settings, and vault data will all be there.
 
 ### Setting Up OpenClaw
 
@@ -122,14 +122,15 @@ OpenClaw is already installed and its gateway is running. You can access the web
 
 ## Reference
 
-### What's in `config/`
+### Persistent Data
 
-The `config/` directory contains bind mounts that persist across container rebuilds. Only the things that matter are stored here -- everything else is ephemeral.
+The following directories are bind-mounted to persist across container rebuilds. Only the things that matter are stored here -- everything else is ephemeral.
 
 | Host path          | Container path             | Purpose                         |
 | ------------------ | -------------------------- | ------------------------------- |
 | `config/obsidian/` | `/config/.config/obsidian` | Obsidian settings               |
 | `config/openclaw/` | `/config/.openclaw`        | OpenClaw settings and workspace |
+| `vaults/`          | `/config/Obsidian`         | Obsidian vault data             |
 
 ### Environment Variables
 

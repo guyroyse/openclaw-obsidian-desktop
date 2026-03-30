@@ -14,6 +14,7 @@ services:
     volumes:
       - ./config/obsidian:/config/.config/obsidian
       - ./config/openclaw:/config/.openclaw
+      - ./vaults:/config/Obsidian
     ports:
       - "${PORT:-3000}:3000"
       - "${OPENCLAW_PORT:-18789}:18789"

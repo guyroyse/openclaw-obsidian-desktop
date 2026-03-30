@@ -1,0 +1,13 @@
+#!/bin/bash
+# Remove stale Chromium singleton locks left by the previous container.
+# These are written by Electron/Obsidian and reference PIDs and temp paths
+# that no longer exist. If present on startup, Obsidian may think another
+# instance is running and start with a blank profile.
+rm -f /config/.config/obsidian/SingletonLock \
+      /config/.config/obsidian/SingletonSocket \
+      /config/.config/obsidian/SingletonCookie
+
+# Register the Obsidian CLI. This must happen at runtime because /config
+# is a volume mount and isn't visible during the image build.
+mkdir -p /config/.local/bin
+cp /opt/Obsidian/obsidian-cli /config/.local/bin/obsidian
