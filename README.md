@@ -24,8 +24,8 @@ You'll be doing three main things to get this up and running:
 1. Clone the repo:
 
    ```bash
-   git clone <repo-url>
-   cd openclaw-desktop
+   git clone git@github.com:guyroyse/openclaw-obsidian-desktop.git
+   cd openclaw-obsidian-desktop
    ```
 
 2. Create your `.env` file:
