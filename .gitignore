@@ -2,6 +2,7 @@
 config/**
 !config/**/
 !config/**/.gitkeep
+config/openclaw/workspace
 !config/openclaw/skills/obsidian-desktop-cli/
 !config/openclaw/skills/obsidian-desktop-cli/**
 
