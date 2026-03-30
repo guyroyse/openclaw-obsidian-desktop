@@ -45,6 +45,8 @@ If no README exists, offer to create one with the user. Ask them about their vau
 
 If a CLI command fails, notify the user of the error. Do not retry automatically. Ask the user if they would like to retry.
 
+However, if a command fails with a sandbox-related error, retry it with `--no-sandbox` as the first argument. For example: `obsidian --no-sandbox read file="Note Name"`. If that works, use `--no-sandbox` for all subsequent commands.
+
 ## Common Commands
 
 ### Reading and Searching
