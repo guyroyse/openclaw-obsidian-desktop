@@ -46,7 +46,9 @@ You'll be doing three main things to get this up and running:
 
    You can use either localhost or access it over your network:
    - **Local access:** `http://localhost:3000`
-   - **LAN access:** `http://your-mahcine.local:3000`
+   - **LAN access:** `https://your-machine.local:3001`
+
+   LAN access requires HTTPS. The container generates a self-signed certificate automatically. Your browser will show a certificate warning the first time -- accept it and the exception will persist.
 
    You'll be prompted for the username and password you set in `.env`.
 
@@ -143,7 +145,8 @@ The following directories are bind-mounted to persist across container rebuilds.
 | `HOSTNAME`      | `openclaw`         | Container hostname            |
 | `TITLE`         | `OpenClaw Desktop` | Browser tab title             |
 | `TZ`            | `UTC`              | Container timezone            |
-| `PORT`          | `3000`             | Host port for web desktop     |
-| `OPENCLAW_PORT` | `18789`            | Host port for OpenClaw web UI |
+| `HTTP_PORT`     | `3000`             | Host port for web desktop (HTTP)  |
+| `HTTPS_PORT`    | `3001`             | Host port for web desktop (HTTPS) |
+| `OPENCLAW_PORT` | `18789`            | Host port for OpenClaw web UI     |
 
 API keys for your LLM provider and Discord bot token should also be set in `.env`. See `.env.sample` for examples.

@@ -16,7 +16,8 @@ services:
       - ./config/openclaw:/config/.openclaw
       - ./vaults:/config/Obsidian
     ports:
-      - "${PORT:-3000}:3000"
+      - "${HTTP_PORT:-3000}:3000"
+      - "${HTTPS_PORT:-3001}:3001"
       - "${OPENCLAW_PORT:-18789}:18789"
     shm_size: "1gb"
     restart: unless-stopped
