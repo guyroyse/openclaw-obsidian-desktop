@@ -11,8 +11,7 @@ ARG OB_AUTOSTART=/etc/xdg/autostart/obsidian.desktop
 RUN apt-get update
 
 # Install Node.js
-RUN apt-get install -y nodejs && \
-    npm install -g npm@latest
+RUN apt-get install -y nodejs
 
 # Install Obsidian Desktop
 RUN curl -fsSL -o ${OB_DEB_PATH} ${OB_DEB_URL} && \
