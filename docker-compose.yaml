@@ -19,5 +19,7 @@ services:
       - "${HTTP_PORT:-3000}:3000"
       - "${HTTPS_PORT:-3001}:3001"
       - "${OPENCLAW_PORT:-18789}:18789"
+    dns:
+      - ${DNS_SERVER:-8.8.8.8}
     shm_size: "1gb"
     restart: unless-stopped

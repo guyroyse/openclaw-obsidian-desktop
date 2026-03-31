@@ -148,5 +148,8 @@ The following directories are bind-mounted to persist across container rebuilds.
 | `HTTP_PORT`     | `3000`             | Host port for web desktop (HTTP)  |
 | `HTTPS_PORT`    | `3001`             | Host port for web desktop (HTTPS) |
 | `OPENCLAW_PORT` | `18789`            | Host port for OpenClaw web UI     |
+| `DNS_SERVER`    | `8.8.8.8`          | DNS server for the container      |
+
+If you run a local DNS server (e.g. Pi-hole) on the same machine as Docker, the container won't be able to resolve hostnames by default. Set `DNS_SERVER` in `.env` to your host machine's LAN IP so the container can reach your DNS server.
 
 API keys for your LLM provider and Discord bot token should also be set in `.env`. See `.env.sample` for examples.
